@@ -3,15 +3,19 @@
   This project, submitted for the "Learn Data Analysis with Python" course from Dicoding, focuses on analysis Air_Quality chinese station data which is objective to analysis about Yearly Trends Changes Between 2013 to 2017, Percentage Growth Pollutant in Yearly, highest and lowest station analysis, and correlations pollutant with weather variables
 
 # Variable Description
+  - PM2.5 = Particulate matter (PM) with a diameter of 2.5 micrometers or less
+  - PM10  = Particulate matter (PM) with a diameter of 10 micrometers or less
   - SO2 = Sulfur dioxide concentration
   - NO2 = Nitrogen dioxide concentration
   - CO  = Carbon monoxide concentration
   - O3  = Ozone concentration
-  - Temperature  = Temperature in degrees Celsius
-  - Pressure  = Atmospheric pressure
+  - Temp  = Temperature in degrees Celsius
+  - Pres  = Atmospheric pressure
+  - DEWP  = Dew point
   - Rain  = Rainfall amount
-  - Wind Direction  = Direction of wind
-  - Wind Speed  = Speed of wind
+  - Wd    = Direction of wind
+  - WSPM  = Speed of wind
 
 # Dashboard URL
+
   
