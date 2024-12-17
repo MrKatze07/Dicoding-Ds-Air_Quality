@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import streamlit as st
 
 # Load the dataset
-data = pd.read_csv('https://github.com/MrKatze07/Dicoding-Ds-Air_Quality/edit/main/dashboard/all_data.csv')
+data = pd.read_csv('all_data.csv')
 
 # Preprocess data: Aggregate yearly pollutant means
 yearly_data = data.groupby(by=['year']).agg({
@@ -55,7 +55,7 @@ if active_option == "Overview":
 
 if active_option == "Yearly Trends Between 2013 to 2017":
     st.header("Trend Perkembangan Polutan dari 2013 hingga 2017")
-    with st.expander("**Yearly Trend Between 2013 to 2017**"):
+    with st.expander("**Yearly Trend Change Between 2013 to 2017**"):
         col1, col2, col3 = st.columns([2, 1, 1])
         
         with col1:
