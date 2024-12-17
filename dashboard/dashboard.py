@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import streamlit as st
 
 # Load the dataset
-data = pd.read_csv('https://github.com/MrKatze07/Dicoding-Ds-Air_Quality/edit/main/dashboard/dashboard.py')
+data = pd.read_csv('all_data.csv')
 
 # Preprocess data: Aggregate yearly pollutant means
 yearly_data = data.groupby(by=['year']).agg({
