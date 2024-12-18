@@ -104,7 +104,7 @@ if active_option == "Yearly Trends Between 2013 to 2017":
 
 if active_option == "Percentage Growth in Yearly":
     st.header("Persentase Perkembangan Polutan Setiap Tahunnya")
-    with st.expander("Percentage Growth in Yearly"):
+    with st.expander("**Percentage Growth in Yearly**"):
         col1, col2 = st.columns([2, 1])
 
         with col1:
@@ -133,7 +133,7 @@ if active_option == "Percentage Growth in Yearly":
 # Highest and Lowest Station Analysis
 if active_option == "Highest and Lowest Station Analysis":
     st.header("Stasiun dengan Polutan Tertinggi dan Terendah")
-    with st.expander("Highest and Lowest Station Analysis"):
+    with st.expander("**Highest and Lowest Station Analysis**"):
         col1, col2, col3 = st.columns([3, 1, 1])
 
         with col1:
@@ -176,7 +176,7 @@ if active_option == "Highest and Lowest Station Analysis":
 
 if active_option == "Correlation Analysis":
     st.header("Korelasi Hubungan Polutan dengan Cuaca")
-    with st.expander("Correlation Between Pollutants and Weather Variables"):
+    with st.expander("**Correlation Between Pollutants and Weather Variables**"):
         col1, col2, col3 = st.columns([2, 1, 1])
 
         with col1:
