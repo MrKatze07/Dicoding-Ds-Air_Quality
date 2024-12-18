@@ -17,5 +17,6 @@
   - WSPM  = Speed of wind
 
 # Dashboard URL
+https://dicoding-ds-airquality-edh73mxymgnrznwuizccp4.streamlit.app/
 
   
