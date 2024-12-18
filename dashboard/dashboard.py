@@ -45,6 +45,9 @@ for option in options:
     if st.sidebar.button(option):
         active_option = option
 
+if active_option in ["Yearly Trends Between 2013 to 2017", "Percentage Growth in Yearly"]:
+    selected_year = st.sidebar.selectbox("Select a year to view details", yearly_data.index)
+
 # Overview
 if active_option == "Overview":
     st.header("Dashboard Overview")
@@ -55,6 +58,8 @@ if active_option == "Overview":
 
 if active_option == "Yearly Trends Between 2013 to 2017":
     st.header("Trend Perkembangan Polutan dari 2013 hingga 2017")
+    st.write(f"**Details for Selected Year: {selected_year}**")
+    st.table(yearly_data.loc[[selected_year]])
     with st.expander("**Yearly Trend Change Between 2013 to 2017**"):
         col1, col2, col3 = st.columns([2, 1, 1])
         
@@ -104,6 +109,8 @@ if active_option == "Yearly Trends Between 2013 to 2017":
 
 if active_option == "Percentage Growth in Yearly":
     st.header("Persentase Perkembangan Polutan Setiap Tahunnya")
+    st.write(f"**Details for Selected Year: {selected_year}**")
+    st.table(pollutant_change_yearly.loc[[selected_year]])
     with st.expander("**Percentage Growth in Yearly**"):
         col1, col2 = st.columns([2, 1])
 
