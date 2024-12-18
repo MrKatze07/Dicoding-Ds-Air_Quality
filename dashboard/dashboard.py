@@ -60,6 +60,7 @@ if active_option == "Yearly Trends Between 2013 to 2017":
     st.header("Trend Perkembangan Polutan dari 2013 hingga 2017")
     st.write(f"**Details for Selected Year: {selected_year}**")
     st.table(yearly_data.loc[[selected_year]])
+    
     with st.expander("**Yearly Trend Change Between 2013 to 2017**"):
         col1, col2, col3 = st.columns([2, 1, 1])
         
@@ -111,8 +112,10 @@ if active_option == "Percentage Growth in Yearly":
     st.header("Persentase Perkembangan Polutan Setiap Tahunnya")
     st.write(f"**Details for Selected Year: {selected_year}**")
     st.table(pollutant_change_yearly.loc[[selected_year]])
+    
     with st.expander("**Percentage Growth in Yearly**"):
         col1, col2 = st.columns([2, 1])
+        
 
         with col1:
             # Create a line plot for yearly percentage changes
@@ -140,6 +143,9 @@ if active_option == "Percentage Growth in Yearly":
 # Highest and Lowest Station Analysis
 if active_option == "Highest and Lowest Station Analysis":
     st.header("Stasiun dengan Polutan Tertinggi dan Terendah")
+    avg_pollutants = avg_pollutants.sort_index()
+    st.write(avg_pollutants)
+    
     with st.expander("**Highest and Lowest Station Analysis**"):
         col1, col2, col3 = st.columns([3, 1, 1])
 
