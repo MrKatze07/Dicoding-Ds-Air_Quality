@@ -18,13 +18,15 @@
 
 # How To Run Dashboard
  1. Setup Requirement
-    '''
+    ```
     pip install pandas numpy scipy matplotlib seaborn streamlit
     pipenv install
     pipenv shell
     pip install -r requirment.txt
+    ```
 2. Run dashboard
- cd dashboard
- streamlit run dashboard.py
- '''
+   ```
+   cd dashboard
+   streamlit run dashboard.py
+   ```
   
