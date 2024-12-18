@@ -22,7 +22,7 @@
     pip install pandas numpy scipy matplotlib seaborn streamlit
     pipenv install
     pipenv shell
-    pip install -r requirment.txt
+    pip install -r requirements.txt
     ```
 2. Run dashboard
    ```
