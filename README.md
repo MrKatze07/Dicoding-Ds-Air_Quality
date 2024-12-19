@@ -19,7 +19,7 @@
 # How To Run Dashboard
  1. Setup Requirement
     ```
-    pip install pandas numpy scipy matplotlib seaborn streamlit
+    pip install pandas numpy scipy matplotlib seaborn pymannkendall scipy streamlit
     pipenv install
     pipenv shell
     pip install -r requirements.txt
