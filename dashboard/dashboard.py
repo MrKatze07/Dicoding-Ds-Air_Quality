@@ -6,8 +6,45 @@ import streamlit as st
 # Load the dataset
 data = pd.read_csv('all_data.csv')
 
-# Preprocess data: Aggregate yearly pollutant means
-yearly_data = data.groupby(by=['year']).agg({
+# Streamlit dashboard
+st.set_page_config(page_title="Air Quality Pollution", layout="wide")
+st.title("Air Quality Pollution")
+
+# Filtering Station
+if "active_option" not in st.session_state:
+    st.session_state.active_option = "Overview"
+
+# Initialize session state for selected station
+if "selected_station" not in st.session_state:
+    st.session_state.selected_station = "All"
+
+# Sidebar navigation
+st.sidebar.title("Navigation")
+options = ["Overview", "Yearly Trends Between 2013 to 2017", "Percentage Growth in Yearly", "Highest and Lowest Station Analysis", "Correlation Analysis", "Insights"]
+
+# Sidebar button logic
+for option in options:
+    if st.sidebar.button(option):
+        st.session_state.active_option = option
+
+# Sidebar station filter
+stations = ["All"] + list(data['station'].unique())
+selected_station = st.sidebar.selectbox(
+    "Filter by Station",
+    stations,
+    index=stations.index(st.session_state.selected_station) if st.session_state.selected_station in stations else 0,
+)
+# Update the filtered station in session state
+st.session_state.selected_station = selected_station
+
+# Filtering data based on selected station
+if st.session_state.selected_station != "All":
+    filtered_data = data[data['station'] == st.session_state.selected_station]
+else:
+    filtered_data = data
+
+# Data preprocessing
+yearly_data = filtered_data.groupby(by=['year']).agg({
     'PM2.5': 'mean',
     'PM10': 'mean',
     'SO2': 'mean',
@@ -15,46 +52,22 @@ yearly_data = data.groupby(by=['year']).agg({
     'CO': 'mean',
     'O3': 'mean'
 }).sort_values(by=['year'], ascending=True)
-
-# Calculate percentage change from 2013 to 2017
-pollutant_change = ((yearly_data.loc[2017] - yearly_data.loc[2013]) / yearly_data.loc[2013]) * 100
-pollutant_change = pd.Series(pollutant_change.squeeze(), index=['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3']).round(2)
-
-# Calculate percentage change in yearly
+pollutant_change = ((yearly_data.loc[2017] - yearly_data.loc[2013]) / yearly_data.loc[2013]* 100).round(2)
 pollutant_change_yearly = yearly_data.pct_change() * 100
 pollutant_change_yearly.fillna(0, inplace=True)
 pollutant_change_yearly = pollutant_change_yearly.round(2)
-
-# Station-level average pollutants
-avg_pollutants = data.groupby('station')[['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3']].mean()
-
-# Correlation matrix for pollutants and weather
-corr_matrix = data[['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3', 'TEMP', 'PRES', 'RAIN', 'WSPM']].corr()
-
-# Streamlit dashboard
-st.set_page_config(page_title="Air Quality Pollution", layout="wide")
-st.title("Air Quality Pollution")
-
-# Sidebar navigation
-st.sidebar.title("Navigation")
-options = ["Overview", "Yearly Trends Between 2013 to 2017", "Percentage Growth in Yearly", "Highest and Lowest Station Analysis", "Correlation Analysis", "Insights"]
-active_option = "Overview"  # Default option
-
-# Sidebar button logic
-for option in options:
-    if st.sidebar.button(option):
-        active_option = option
-
+avg_pollutants = filtered_data.groupby('station')[['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3']].mean()
+corr_matrix = filtered_data[['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3', 'TEMP', 'PRES', 'RAIN', 'WSPM']].corr()
 
 # Overview
-if active_option == "Overview":
+if st.session_state.active_option == "Overview":
     st.header("Dashboard Overview")
     st.markdown(
         """This dashboard provides insights into air pollution data, including yearly trends, percentage growth pollutant in yearly, 
        highest and lowest station analysis, and correlations pollutant with weather variables. Use the navigation panel to explore each view."""
     )
 
-if active_option == "Yearly Trends Between 2013 to 2017":
+elif st.session_state.active_option == "Yearly Trends Between 2013 to 2017":
     st.header("Trend Perkembangan Polutan dari 2013 hingga 2017")
     with st.expander("**Yearly Trend Change Between 2013 to 2017**"):
         col1, col2, col3 = st.columns([2, 1, 1])
@@ -103,12 +116,10 @@ if active_option == "Yearly Trends Between 2013 to 2017":
             
             st.table(pollutant_change)
 
-if active_option == "Percentage Growth in Yearly":
+elif st.session_state.active_option == "Percentage Growth in Yearly":
     st.header("Persentase Perkembangan Polutan Setiap Tahunnya") 
     with st.expander("**Percentage Growth in Yearly**"):
         col1, col2 = st.columns([2, 1])
-        
-
         with col1:
             # Create a line plot for yearly percentage changes
             fig, ax = plt.subplots(figsize=(10, 6))
@@ -133,7 +144,7 @@ if active_option == "Percentage Growth in Yearly":
             st.table(pollutant_change_yearly)
 
 # Highest and Lowest Station Analysis
-if active_option == "Highest and Lowest Station Analysis":
+elif st.session_state.active_option == "Highest and Lowest Station Analysis":
     st.header("Stasiun dengan Polutan Tertinggi dan Terendah")
     with st.expander("**Highest and Lowest Station Analysis**"):
         col1, col2, col3 = st.columns([3, 1, 1])
@@ -171,12 +182,11 @@ if active_option == "Highest and Lowest Station Analysis":
             st.write("**Lowest Station-Level Table:**")
             st.table(stations_lowest)
 
-
         with col3:
             st.write("**Station-Level Averages Table:**")
             st.table(avg_pollutants)
 
-if active_option == "Correlation Analysis":
+elif st.session_state.active_option == "Correlation Analysis":
     st.header("Korelasi Hubungan Polutan dengan Cuaca")
     with st.expander("**Correlation Between Pollutants and Weather Variables**"):
         col1, col2, col3 = st.columns([2, 1, 1])
@@ -196,7 +206,7 @@ if active_option == "Correlation Analysis":
             st.write("**Correlation Table:**")
             st.table(corr_matrix)
 
-if active_option == "Insights":
+elif st.session_state.active_option == "Insights":
     st.header("Conclusion")
     st.markdown("""
                 ## Trend Kualitas Polusi dari 2013 ke 2017
@@ -210,10 +220,9 @@ if active_option == "Insights":
 
                 ## Perkembangan Trend Kualitas Polusi Tiap Tahunnya
                   Berdasarkan analisis data, perkembangan tiap tahun menunjukkan hal-hal berikut:
-                - **2014** merupakan titik awal kenaikan persentase pada setiap polutan. Pada tahun ini, semuanya mengalami kenaikan, dengan peningkatan terbesar terjadi pada **PM10 (12.67%)** dan **PM2.5 (6.72%)**.
-                - **2015** mengalami penurunan signifikan pada sebagian besar polutan, terkecuali pada **CO** yang mengalami peningkatan sedikit sebanyak **CO (0.11%)** dan **O3 (1.60%)**.
-                - **2016** melanjutkan penurunan sebagian besar polutan, namun tidak separah tahun 2015.
-                - **2017** merupakan tahun dengan peningkatan polutan yang sangat signifikan.
+                - Semua polutan menunjukkan perubahan besar dari tahun ke tahun, dengan beberapa tahun menunjukkan penurunan drastis (2015 dan 2016) dan tahun 2017 menjadi tahun dengan kenaikan tertinggi untuk sebagian besar polutan.
+                - Ozon menunjukkan tren menurun pada tahun 2017, berbeda dengan PM2.5, PM10, SO2, NO2, dan CO yang cenderung meningkat pada tahun tersebut.
+                - Meski terjadinya peningkatan dan penurunan rata-rata polutan setiap tahunnya namun hal tersebut terjadi secara tidak konsisten dimana hal ini menjadikan tidak adanya perubahan tren yang signifikan pada uji Mann-Kendall.
 
                 ## Stasiun dengan Tingkat Pollutan Tertinggi dan Terendah
                   Berdasarkan analisis data, **stasiun dengan polutan tertinggi** adalah **Dongsi** dan **stasiun dengan polutan terendah** adalah **Dingling**.
@@ -227,5 +236,4 @@ if active_option == "Insights":
                 
                 Secara keseluruhan, **suhu** dan **angin** memiliki pengaruh yang lebih besar terhadap **kenaikan konsentrasi polutan**, sedangkan **tekanan** dan **hujan** memiliki pengaruh yang lebih lemah."""
                 )
-
 
