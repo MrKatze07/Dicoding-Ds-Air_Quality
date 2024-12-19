@@ -32,7 +32,7 @@
 # Url Dashboard
   https://dicoding-ds-airquality-dnat8vtydwmn8xttc6zlcw.streamlit.app/
 
-  Note: Since my dashboard does work in local and not work in deploy streamlit. i got error when i put same data and dashboard.py in dashboard folder so change it the code in this part :
-  data = pd.read_csv('all_data.csv') in local
-  data = pd.read_csv('dashboard/all_data.csv') to deploy dashboard.py
+  Note: Since my dashboard does work in local and not work in deploy streamlit. i got error when i put csv data and dashboard.py in same folder dasboard, so i change the code in this part :
+  data = pd.read_csv('all_data.csv') > in local test before deploy
+  data = pd.read_csv('dashboard/all_data.csv') to deploy dashboard on streamlit
   
